@@ -1,0 +1,2 @@
+# djangorealtime
+Django Realtime app
