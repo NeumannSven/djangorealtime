@@ -4,19 +4,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>pySpace Realtime App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
 </head>
 <body>
 
-
     <h1 id='variable' >{{variable}}</h1>
 
+
 <script type="text/javascript">
+ 
     socket = new WebSocket('ws://localhost:8000/ws/variable/')
     socket.onmessage = function(e){
 
         data = JSON.parse(e.data);
-        console.log(data)
+        console.log(data.variable)
+
         document.querySelector('#variable').innerText = data.variable;
+
 
     }
 
