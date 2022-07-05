@@ -9,19 +9,49 @@
 <body>
 
     <h1 id='variable' >{{variable}}</h1>
-
+<div>
+  <canvas id="myChart"></canvas>
+</div>
 
 <script type="text/javascript">
- 
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    
+    graphData = {
+        type: 'line',
+        data: {
+            labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'],
+            datasets: [{
+                label: 'Variable',
+                data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                backgroundColor:'rgba(255, 0, 0, 1)',
+                borderColor: 'rgba(0, 255, 0, 1)',
+                cubicInterpolationMode: 'monotone',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+        }
+    }
+    
+    const myChart = new Chart(ctx, graphData);
+
+
     socket = new WebSocket('ws://localhost:8000/ws/variable/')
     socket.onmessage = function(e){
 
         data = JSON.parse(e.data);
         console.log(data.variable)
 
+        var newGraphData = graphData.data.datasets[0].data
+        newGraphData.shift();
+        newGraphData.push(data.variable)
+
+        graphData.data.datasets[0].data = newGraphData
+        myChart.update();
+
         document.querySelector('#variable').innerText = data.variable;
-
-
     }
 
 </script>
